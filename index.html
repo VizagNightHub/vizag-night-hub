@@ -28,77 +28,91 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: var(--bg-main); color: var(--text-main); height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 
-    /* AUTH CONTAINER */
-    .auth-container { width: 100%; max-width: 440px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-height: 90vh; overflow-y: auto; }
-    .brand-header { text-align: center; margin-bottom: 24px; }
-    .brand-header .logo-icon { font-size: 38px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-    .brand-header h1 { font-size: 24px; font-weight: 700; }
+    /* AUTH */
+    .auth-container { width: 100%; max-width: 460px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-height: 94vh; overflow-y: auto; }
+    .brand-header { text-align: center; margin-bottom: 18px; }
+    .brand-header .logo-icon { font-size: 36px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+    .brand-header h1 { font-size: 22px; font-weight: 700; }
     .brand-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-    .form-group { margin-bottom: 14px; text-align: left; }
-    .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
-    .form-group input { width: 100%; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text-main); font-size: 14px; outline: none; }
+    
+    .notice-badge { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: #fca5a5; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; text-align: center; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    .form-group { margin-bottom: 12px; text-align: left; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+    .form-group input { width: 100%; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 13px; outline: none; }
     .form-group input:disabled { opacity: 0.6; cursor: not-allowed; }
+    
+    .profile-upload-preview { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .preview-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); background: var(--bg-card); }
+
     .btn { width: 100%; background: var(--accent-gradient); color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; }
     .btn:hover { opacity: 0.95; }
-    .auth-toggle { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 16px; }
+    .auth-toggle { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 14px; }
     .auth-toggle a { color: var(--accent); text-decoration: none; font-weight: 600; cursor: pointer; }
 
     /* APP LAYOUT */
     .app-container { width: 100vw; height: 100vh; display: none; grid-template-columns: 320px 1fr; background: var(--bg-main); }
     .sidebar { background: var(--bg-surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-    .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .group-info h2 { font-size: 18px; font-weight: 700; }
-    .group-info span { font-size: 12px; color: var(--success); display: flex; align-items: center; gap: 4px; }
+    .sidebar-header { padding: 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .group-info h2 { font-size: 17px; font-weight: 700; }
+    .group-info span { font-size: 11px; color: var(--danger); font-weight: 600; }
     .sidebar-actions { display: flex; gap: 6px; }
     .sidebar-actions button { background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 8px; cursor: pointer; }
-    .members-section { flex: 1; overflow-y: auto; padding: 16px; }
-    .members-section h3 { font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; }
-    .member-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 8px; margin-bottom: 6px; background: rgba(255,255,255,0.02); }
+    
+    .members-section { flex: 1; overflow-y: auto; padding: 14px; }
+    .members-section h3 { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+    .member-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 10px; margin-bottom: 6px; background: rgba(255,255,255,0.02); }
     .member-meta { display: flex; align-items: center; gap: 10px; overflow: hidden; }
-    .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0; }
+    .avatar-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent); flex-shrink: 0; }
     .member-username { font-size: 13px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
     .member-subtext { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
     .badge-host { background: rgba(245, 158, 11, 0.15); color: var(--host-badge); border: 1px solid var(--host-badge); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 600; margin-left: 4px; }
     .btn-kick { background: transparent; border: none; color: var(--danger); cursor: pointer; font-size: 13px; }
-    .user-footer { padding: 16px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .user-footer { padding: 14px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 
     /* CHAT */
     .chat-area { display: flex; flex-direction: column; height: 100vh; background: var(--bg-main); }
-    .chat-header { padding: 18px 24px; border-bottom: 1px solid var(--border); background: var(--bg-surface); display: flex; align-items: center; justify-content: space-between; }
-    .messages-container { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-    .message-bubble { max-width: 65%; display: flex; flex-direction: column; }
-    .message-bubble.me { align-self: flex-end; }
+    .chat-header { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg-surface); display: flex; align-items: center; justify-content: space-between; }
+    .messages-container { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .message-bubble { max-width: 70%; display: flex; gap: 10px; align-items: flex-start; }
+    .message-bubble.me { align-self: flex-end; flex-direction: row-reverse; }
     .message-bubble.me .bubble-content { background: var(--accent); color: #fff; border-radius: 16px 16px 2px 16px; }
     .message-bubble.other { align-self: flex-start; }
     .message-bubble.other .bubble-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px 16px 16px 2px; }
-    .bubble-sender { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+    .bubble-sender { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: block; }
     .bubble-content { padding: 12px 16px; word-break: break-word; }
-    .bubble-content img, .bubble-content video { max-width: 100%; max-height: 280px; border-radius: 8px; margin-top: 6px; display: block; }
+    .bubble-content img.chat-media, .bubble-content video { max-width: 100%; max-height: 280px; border-radius: 8px; margin-top: 6px; display: block; }
     .bubble-actions { margin-top: 4px; display: flex; justify-content: flex-end; }
     .btn-del-msg { background: transparent; border: none; color: var(--danger); font-size: 11px; cursor: pointer; }
 
     /* INPUT BAR */
-    .chat-input-bar { padding: 16px 24px; background: var(--bg-surface); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .chat-input-bar { padding: 14px 20px; background: var(--bg-surface); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
     .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .chat-input-bar input[type="text"] { flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: #fff; outline: none; }
 
-    /* MODALS */
-    .modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 100; }
-    .modal-content { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 400px; width: 90%; text-align: center; }
+    /* MODAL */
+    .modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 100; }
+    .modal-content { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 420px; width: 92%; text-align: center; }
     #qrcode { background: #fff; padding: 12px; border-radius: 10px; display: inline-block; margin: 16px 0; }
   </style>
 </head>
 <body>
 
-  <!-- AUTHENTICATION FORM -->
+  <!-- AUTH FORM -->
   <div class="auth-container" id="authBox">
     <div class="brand-header">
       <div class="logo-icon"><i class="fa-solid fa-moon"></i></div>
       <h1>Vizag Night Hub</h1>
-      <p id="authSubtitle">Live Real-Time Cloud Group (18+)</p>
+      <p id="authSubtitle">Live Real-Time Private Group (18+)</p>
     </div>
 
-    <!-- Step 1: Login Form -->
+    <!-- MAIN NOTE BANNER -->
+    <div class="notice-badge">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      MAIN NOTE: ONLY VIZAG BOYS ARE ALLOWED (18+)
+    </div>
+
+    <!-- Login View -->
     <div id="loginSection">
       <div class="form-group">
         <label>Email Address</label>
@@ -114,7 +128,7 @@
       </div>
     </div>
 
-    <!-- Step 2: Register Email View -->
+    <!-- Register Step 1: Email -->
     <div id="registerSection" style="display: none;">
       <div class="form-group">
         <label>Enter Email Address</label>
@@ -126,20 +140,34 @@
       </div>
     </div>
 
-    <!-- Step 3: OTP, Username, DOB & Password Creation -->
+    <!-- Register Step 2: Details & Profile Photo -->
     <div id="otpSection" style="display: none;">
       <div class="form-group">
         <label>Enter 6-Digit OTP</label>
         <input type="text" id="enteredOtp" placeholder="123456" maxlength="6" />
       </div>
       <div class="form-group">
-        <label>Choose Username</label>
-        <input type="text" id="regUsername" placeholder="e.g., Alex_Vizag" />
+        <label>Choose Display Username</label>
+        <input type="text" id="regUsername" placeholder="e.g., Sai_Vizag" />
       </div>
       <div class="form-group">
-        <label>Date of Birth (18+ Only - Locked after set)</label>
+        <label>Vizag Location / Area Name (Required)</label>
+        <input type="text" id="regLocation" placeholder="e.g., MVP Colony, Siripuram, Gajuwaka" />
+      </div>
+      <div class="form-group">
+        <label>Date of Birth (18+ Only - Locked permanently)</label>
         <input type="date" id="regDob" />
       </div>
+      
+      <!-- Profile Picture Upload -->
+      <div class="form-group">
+        <label>Upload Profile Picture</label>
+        <div class="profile-upload-preview">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=user" id="regPicPreview" class="preview-img" alt="Avatar" />
+          <input type="file" id="regPicFile" accept="image/*" onchange="previewSelectedAvatar(event, 'regPicPreview')" style="padding: 6px;" />
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Create New Password</label>
         <input type="password" id="newPassword" placeholder="••••••••" />
@@ -157,7 +185,7 @@
       <div class="sidebar-header">
         <div class="group-info">
           <h2>Vizag Night Hub</h2>
-          <span><i class="fa-solid fa-circle" style="font-size: 8px;"></i> 18+ Active</span>
+          <span><i class="fa-solid fa-shield-halved"></i> ONLY VIZAG BOYS (18+)</span>
         </div>
         <div class="sidebar-actions">
           <button onclick="openProfileModal()" title="Profile Settings"><i class="fa-solid fa-user-gear"></i></button>
@@ -166,13 +194,13 @@
       </div>
 
       <div class="members-section">
-        <h3>Live Members</h3>
+        <h3>Active Vizag Members</h3>
         <div id="membersList"></div>
       </div>
 
       <div class="user-footer">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div class="avatar" id="myAvatar">U</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img id="myAvatarImg" class="avatar-img" src="" alt="My Avatar" />
           <div>
             <div id="myUsernameLabel" style="font-size: 13px; font-weight:600;"></div>
             <div id="myRoleLabel" style="font-size: 11px; color: var(--text-muted);"></div>
@@ -185,8 +213,8 @@
     <div class="chat-area">
       <div class="chat-header">
         <div>
-          <strong style="font-size:16px;">Vizag Night Feed</strong>
-          <p style="font-size: 12px; color: var(--text-muted);">Synchronized private room</p>
+          <strong style="font-size:15px;">Vizag Night Feed</strong>
+          <p style="font-size: 11px; color: var(--text-muted);">Private room for Vizag Boys</p>
         </div>
         <div id="hostPrivilegeNotice" style="display:none; font-size:12px; color:var(--host-badge);">
           <i class="fa-solid fa-shield-halved"></i> Host Admin Active
@@ -205,13 +233,27 @@
     </div>
   </div>
 
-  <!-- PROFILE MODAL -->
+  <!-- PROFILE SETTINGS MODAL -->
   <div class="modal" id="profileModal">
     <div class="modal-content" style="text-align: left;">
-      <h3 style="text-align:center; margin-bottom: 16px;"><i class="fa-solid fa-id-card"></i> Profile Settings</h3>
+      <h3 style="text-align:center; margin-bottom: 16px;"><i class="fa-solid fa-id-card"></i> Edit Profile</h3>
+      
+      <!-- Change Profile Picture -->
+      <div class="form-group" style="text-align:center;">
+        <label style="text-align:center;">Change Profile Picture (Visible to all)</label>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin: 8px 0;">
+          <img src="" id="profPicPreview" class="preview-img" style="width:72px; height:72px;" alt="Avatar" />
+          <input type="file" id="profPicFile" accept="image/*" onchange="previewSelectedAvatar(event, 'profPicPreview')" style="font-size:12px;" />
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Display Username</label>
         <input type="text" id="profUsername" placeholder="Your username" />
+      </div>
+      <div class="form-group">
+        <label>Vizag Location Area</label>
+        <input type="text" id="profLocation" placeholder="e.g., Siripuram" />
       </div>
       <div class="form-group">
         <label>Email Address</label>
@@ -221,7 +263,8 @@
         <label>Date of Birth (Locked - 18+ Verified)</label>
         <input type="text" id="profDob" disabled />
       </div>
-      <button class="btn" onclick="saveProfileChanges()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+
+      <button class="btn" onclick="saveProfileChanges()"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
       <button class="btn" style="background: var(--bg-card); margin-top: 8px;" onclick="closeProfileModal()">Close</button>
     </div>
   </div>
@@ -229,8 +272,8 @@
   <!-- INVITE MODAL -->
   <div class="modal" id="inviteModal">
     <div class="modal-content">
-      <h3>Invite to Vizag Night Hub</h3>
-      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Scan or share link to join this 18+ hub.</p>
+      <h3>Invite Vizag Boys</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Share with Vizag local friends (18+ only).</p>
       <div id="qrcode"></div>
       <div class="form-group" style="margin-top: 10px;">
         <input type="text" id="inviteUrl" readonly style="font-size: 12px;" />
@@ -241,24 +284,21 @@
   </div>
 
   <script>
-    // --- HOST CREDENTIALS ---
     const HOST_EMAIL = "vardhansai8116@gmail.com";
     const HOST_PASS = "Vardhan@8116";
-
-    // Privacy Masking (e.g. "alex@gmail.com" -> "ale***@gmail.com")
-    function maskEmail(email) {
-      if (!email || !email.includes("@")) return "Hidden User";
-      const parts = email.split("@");
-      const name = parts[0];
-      const domain = parts[1];
-      const visible = name.substring(0, 3);
-      return `${visible}***@${domain}`;
-    }
+    const DEFAULT_AVATAR = "https://api.dicebear.com/7.x/bottts/svg?seed=";
 
     let generatedOtp = null;
     let tempRegEmail = "";
+    let uploadedAvatarBase64 = "";
 
-    // VIEW TOGGLES
+    function maskEmail(email) {
+      if (!email || !email.includes("@")) return "Hidden User";
+      const parts = email.split("@");
+      const visible = parts[0].substring(0, 3);
+      return `${visible}***@${parts[1]}`;
+    }
+
     function showRegisterView() {
       document.getElementById("loginSection").style.display = "none";
       document.getElementById("registerSection").style.display = "block";
@@ -277,7 +317,17 @@
       document.getElementById("otpSection").style.display = "block";
     }
 
-    // 18+ Verification Logic
+    function previewSelectedAvatar(event, previewId) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById(previewId).src = e.target.result;
+        uploadedAvatarBase64 = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     function calculateAge(dobString) {
       const dob = new Date(dobString);
       const today = new Date();
@@ -289,7 +339,6 @@
       return age;
     }
 
-    // Step 2: Trigger OTP
     function sendOtp() {
       const email = document.getElementById("regEmail").value.trim().toLowerCase();
       if (!email || !email.includes("@")) {
@@ -302,10 +351,10 @@
       showOtpView();
     }
 
-    // Step 3: Validate and Register
     function verifyAndSetPassword() {
       const enteredOtp = document.getElementById("enteredOtp").value.trim();
       const username = document.getElementById("regUsername").value.trim();
+      const locationArea = document.getElementById("regLocation").value.trim();
       const dobVal = document.getElementById("regDob").value;
       const newPassword = document.getElementById("newPassword").value.trim();
 
@@ -317,6 +366,10 @@
         alert("Please choose a username.");
         return;
       }
+      if (!locationArea) {
+        alert("Please enter your Vizag Location / Area Name.");
+        return;
+      }
       if (!dobVal) {
         alert("Please select your date of birth.");
         return;
@@ -324,7 +377,7 @@
 
       const age = calculateAge(dobVal);
       if (isNaN(age) || age < 18) {
-        alert("Access Denied: You must be 18+ to register for Vizag Night Hub.");
+        alert("MAIN NOTE: Only Vizag Boys aged 18+ are allowed to register.");
         return;
       }
 
@@ -333,23 +386,36 @@
         return;
       }
 
-      // Save user to storage
-      const userData = { email: tempRegEmail, username: username, dob: dobVal, password: newPassword };
+      const avatarToSave = uploadedAvatarBase64 || (DEFAULT_AVATAR + username);
+
+      const userData = {
+        email: tempRegEmail,
+        username: username,
+        location: locationArea,
+        dob: dobVal,
+        avatar: avatarToSave,
+        password: newPassword
+      };
+      
       localStorage.setItem("user_" + tempRegEmail, JSON.stringify(userData));
 
-      // Append to members list
       let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
       if (!members.find(m => m.email === tempRegEmail)) {
-        members.push({ email: tempRegEmail, username: username, dob: dobVal });
+        members.push({
+          email: tempRegEmail,
+          username: username,
+          location: locationArea,
+          dob: dobVal,
+          avatar: avatarToSave
+        });
         localStorage.setItem("vize_members_list", JSON.stringify(members));
       }
 
-      alert("Registration complete! You are verified as 18+. Please sign in.");
+      alert("Registration complete! Welcome to Vizag Night Hub (18+). Please sign in.");
       showLoginView();
       document.getElementById("loginEmail").value = tempRegEmail;
     }
 
-    // LOGIN
     function handleLogin() {
       const email = document.getElementById("loginEmail").value.trim().toLowerCase();
       const pass = document.getElementById("loginPassword").value.trim();
@@ -357,7 +423,8 @@
       if (email === HOST_EMAIL && pass === HOST_PASS) {
         sessionStorage.setItem("currentUser", email);
         sessionStorage.setItem("currentUsername", "Admin Host");
-        launchApp(email, "Admin Host");
+        sessionStorage.setItem("currentAvatar", DEFAULT_AVATAR + "Host");
+        launchApp(email, "Admin Host", DEFAULT_AVATAR + "Host");
         return;
       }
 
@@ -365,22 +432,23 @@
       if (localUser && localUser.password === pass) {
         sessionStorage.setItem("currentUser", email);
         sessionStorage.setItem("currentUsername", localUser.username || email.split('@')[0]);
-        launchApp(email, localUser.username || email.split('@')[0]);
+        sessionStorage.setItem("currentAvatar", localUser.avatar || (DEFAULT_AVATAR + localUser.username));
+        launchApp(email, localUser.username, localUser.avatar);
         return;
       }
 
-      alert("Invalid Email or Password. If you are new, click 'Register with Email OTP'.");
+      alert("Invalid Email or Password. Please register first.");
     }
 
-    function launchApp(email, username) {
+    function launchApp(email, username, avatar) {
       document.getElementById("authBox").style.display = "none";
       document.getElementById("appBox").style.display = "grid";
 
       document.getElementById("myUsernameLabel").innerText = username;
-      document.getElementById("myAvatar").innerText = username[0].toUpperCase();
+      document.getElementById("myAvatarImg").src = avatar || (DEFAULT_AVATAR + username);
       
       const isHost = email === HOST_EMAIL;
-      document.getElementById("myRoleLabel").innerText = isHost ? "Group Host (Admin)" : "Member (18+)";
+      document.getElementById("myRoleLabel").innerText = isHost ? "Group Host (Admin)" : "Vizag Member (18+)";
       if (isHost) document.getElementById("hostPrivilegeNotice").style.display = "block";
 
       renderApp();
@@ -395,8 +463,11 @@
       const email = sessionStorage.getItem("currentUser");
       const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
       document.getElementById("profUsername").value = sessionStorage.getItem("currentUsername") || "";
+      document.getElementById("profLocation").value = localUser.location || "Vizag";
       document.getElementById("profEmail").value = email || "";
       document.getElementById("profDob").value = localUser.dob || "18+ Verified (Locked)";
+      document.getElementById("profPicPreview").src = sessionStorage.getItem("currentAvatar") || (DEFAULT_AVATAR + localUser.username);
+      uploadedAvatarBase64 = "";
       document.getElementById("profileModal").style.display = "flex";
     }
 
@@ -406,6 +477,7 @@
 
     function saveProfileChanges() {
       const newName = document.getElementById("profUsername").value.trim();
+      const newLoc = document.getElementById("profLocation").value.trim();
       const email = sessionStorage.getItem("currentUser");
 
       if (!newName) {
@@ -413,19 +485,26 @@
         return;
       }
 
-      sessionStorage.setItem("currentUsername", newName);
-      document.getElementById("myUsernameLabel").innerText = newName;
-      document.getElementById("myAvatar").innerText = newName[0].toUpperCase();
-
       const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
       localUser.username = newName;
+      localUser.location = newLoc || "Vizag";
+      
+      if (uploadedAvatarBase64) {
+        localUser.avatar = uploadedAvatarBase64;
+        sessionStorage.setItem("currentAvatar", uploadedAvatarBase64);
+      }
+
+      sessionStorage.setItem("currentUsername", newName);
       localStorage.setItem("user_" + email, JSON.stringify(localUser));
 
       let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
-      members = members.map(m => m.email === email ? { ...m, username: newName } : m);
+      members = members.map(m => m.email === email ? { ...m, username: newName, location: newLoc, avatar: localUser.avatar } : m);
       localStorage.setItem("vize_members_list", JSON.stringify(members));
 
-      alert("Username updated successfully!");
+      document.getElementById("myUsernameLabel").innerText = newName;
+      document.getElementById("myAvatarImg").src = sessionStorage.getItem("currentAvatar");
+
+      alert("Profile updated successfully!");
       closeProfileModal();
       renderApp();
     }
@@ -434,10 +513,9 @@
       const currentUser = sessionStorage.getItem("currentUser");
       const isHost = currentUser === HOST_EMAIL;
 
-      // Render Members
       let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
       if (!members.find(m => m.email === HOST_EMAIL)) {
-        members.unshift({ email: HOST_EMAIL, username: "Admin Host", dob: "Verified" });
+        members.unshift({ email: HOST_EMAIL, username: "Admin Host", location: "Vizag Main", avatar: DEFAULT_AVATAR + "Host" });
       }
 
       const membersList = document.getElementById("membersList");
@@ -447,15 +525,16 @@
         const isMemberHost = m.email === HOST_EMAIL;
         const displayName = m.username || "Member";
         const emailToShow = isHost ? m.email : maskEmail(m.email);
+        const locTag = m.location ? `📍 ${m.location}` : '📍 Vizag';
 
         const item = document.createElement("div");
         item.className = "member-item";
         item.innerHTML = `
           <div class="member-meta">
-            <div class="avatar" style="${isMemberHost ? 'background: var(--host-badge);' : ''}">${displayName[0].toUpperCase()}</div>
+            <img src="${m.avatar || (DEFAULT_AVATAR + displayName)}" class="avatar-img" style="${isMemberHost ? 'border-color: var(--host-badge);' : ''}" alt="Avatar" />
             <div>
               <div class="member-username">${displayName} ${isMemberHost ? '<span class="badge-host">HOST</span>' : ''}</div>
-              <div class="member-subtext">${emailToShow}</div>
+              <div class="member-subtext">${locTag} • ${emailToShow}</div>
             </div>
           </div>
           ${(isHost && !isMemberHost) ? `<button class="btn-kick" onclick="removeMember(${idx})" title="Kick Member"><i class="fa-solid fa-user-xmark"></i></button>` : ''}
@@ -480,21 +559,24 @@
 
         let mediaHtml = "";
         if (msg.media) {
-          if (msg.media.type.startsWith("image")) mediaHtml = `<img src="${msg.media.data}" />`;
+          if (msg.media.type.startsWith("image")) mediaHtml = `<img src="${msg.media.data}" class="chat-media" />`;
           else if (msg.media.type.startsWith("video")) mediaHtml = `<video controls src="${msg.media.data}"></video>`;
         }
         let locHtml = msg.location ? `<p><i class="fa-solid fa-map-location-dot"></i> <a href="${msg.location}" target="_blank" style="color:#fff; text-decoration:underline;">View GPS Location</a></p>` : '';
 
-        const senderTag = isHost ? `${msg.senderName} (${msg.email})` : msg.senderName;
+        const senderTag = isHost ? `${msg.senderName} (${msg.email})` : `${msg.senderName} 📍 ${msg.loc || 'Vizag'}`;
 
         msgEl.innerHTML = `
-          <span class="bubble-sender">${senderTag} • ${msg.time}</span>
-          <div class="bubble-content">
-            ${msg.text ? `<p>${msg.text}</p>` : ''}
-            ${mediaHtml}
-            ${locHtml}
+          <img src="${msg.avatar || (DEFAULT_AVATAR + msg.senderName)}" class="avatar-img" style="width:32px; height:32px;" alt="Avatar" />
+          <div style="flex:1;">
+            <span class="bubble-sender">${senderTag} • ${msg.time}</span>
+            <div class="bubble-content">
+              ${msg.text ? `<p>${msg.text}</p>` : ''}
+              ${mediaHtml}
+              ${locHtml}
+            </div>
+            ${isHost ? `<div class="bubble-actions"><button class="btn-del-msg" onclick="deleteMessage(${idx})"><i class="fa-solid fa-trash"></i> Delete</button></div>` : ''}
           </div>
-          ${isHost ? `<div class="bubble-actions"><button class="btn-del-msg" onclick="deleteMessage(${idx})"><i class="fa-solid fa-trash"></i> Delete</button></div>` : ''}
         `;
         container.appendChild(msgEl);
       });
@@ -546,12 +628,16 @@
     function pushLocalMessage(payload) {
       const email = sessionStorage.getItem("currentUser");
       const senderName = sessionStorage.getItem("currentUsername") || email.split('@')[0];
+      const avatar = sessionStorage.getItem("currentAvatar") || (DEFAULT_AVATAR + senderName);
+      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       let messages = JSON.parse(localStorage.getItem("vize_messages_history") || "[]");
       messages.push({
         email: email,
         senderName: senderName,
+        loc: localUser.location || "Vizag",
+        avatar: avatar,
         text: payload.text || null,
         media: payload.media || null,
         location: payload.location || null,
