@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vizag Night Hub</title>
+  <!-- Google Fonts & Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- QRCode.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
     :root {
@@ -28,17 +28,18 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: var(--bg-main); color: var(--text-main); height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 
-    /* AUTH */
+    /* AUTH CONTAINER */
     .auth-container { width: 100%; max-width: 440px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-height: 90vh; overflow-y: auto; }
     .brand-header { text-align: center; margin-bottom: 24px; }
     .brand-header .logo-icon { font-size: 38px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
     .brand-header h1 { font-size: 24px; font-weight: 700; }
     .brand-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-    .form-group { margin-bottom: 14px; }
+    .form-group { margin-bottom: 14px; text-align: left; }
     .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
     .form-group input { width: 100%; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text-main); font-size: 14px; outline: none; }
     .form-group input:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn { width: 100%; background: var(--accent-gradient); color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn { width: 100%; background: var(--accent-gradient); color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; }
+    .btn:hover { opacity: 0.95; }
     .auth-toggle { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 16px; }
     .auth-toggle a { color: var(--accent); text-decoration: none; font-weight: 600; cursor: pointer; }
 
@@ -89,6 +90,7 @@
 </head>
 <body>
 
+  <!-- AUTHENTICATION FORM -->
   <div class="auth-container" id="authBox">
     <div class="brand-header">
       <div class="logo-icon"><i class="fa-solid fa-moon"></i></div>
@@ -96,6 +98,7 @@
       <p id="authSubtitle">Live Real-Time Cloud Group (18+)</p>
     </div>
 
+    <!-- Step 1: Login Form -->
     <div id="loginSection">
       <div class="form-group">
         <label>Email Address</label>
@@ -105,19 +108,25 @@
         <label>Password</label>
         <input type="password" id="loginPassword" placeholder="••••••••" />
       </div>
-      <button class="btn" onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
-      <div class="auth-toggle">New to Hub? <a onclick="toggleAuthMode('register')">Register with Email OTP (18+)</a></div>
+      <button class="btn" type="button" onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      <div class="auth-toggle">
+        New to Hub? <a href="javascript:void(0)" onclick="showRegisterView()">Register with Email OTP (18+)</a>
+      </div>
     </div>
 
+    <!-- Step 2: Register Email View -->
     <div id="registerSection" style="display: none;">
       <div class="form-group">
         <label>Enter Email Address</label>
         <input type="email" id="regEmail" placeholder="name@domain.com" />
       </div>
-      <button class="btn" onclick="sendOtp()"><i class="fa-solid fa-paper-plane"></i> Send OTP</button>
-      <div class="auth-toggle">Already registered? <a onclick="toggleAuthMode('login')">Sign In</a></div>
+      <button class="btn" type="button" onclick="sendOtp()"><i class="fa-solid fa-paper-plane"></i> Send OTP</button>
+      <div class="auth-toggle">
+        Already registered? <a href="javascript:void(0)" onclick="showLoginView()">Sign In</a>
+      </div>
     </div>
 
+    <!-- Step 3: OTP, Username, DOB & Password Creation -->
     <div id="otpSection" style="display: none;">
       <div class="form-group">
         <label>Enter 6-Digit OTP</label>
@@ -128,17 +137,21 @@
         <input type="text" id="regUsername" placeholder="e.g., Alex_Vizag" />
       </div>
       <div class="form-group">
-        <label>Date of Birth (18+ Only - Locked after registration)</label>
+        <label>Date of Birth (18+ Only - Locked after set)</label>
         <input type="date" id="regDob" />
       </div>
       <div class="form-group">
         <label>Create New Password</label>
         <input type="password" id="newPassword" placeholder="••••••••" />
       </div>
-      <button class="btn" onclick="verifyAndSetPassword()"><i class="fa-solid fa-check"></i> Complete Registration</button>
+      <button class="btn" type="button" onclick="verifyAndSetPassword()"><i class="fa-solid fa-check"></i> Complete Registration</button>
+      <div class="auth-toggle">
+        <a href="javascript:void(0)" onclick="showLoginView()">Back to Login</a>
+      </div>
     </div>
   </div>
 
+  <!-- MAIN CHAT APP -->
   <div class="app-container" id="appBox">
     <div class="sidebar">
       <div class="sidebar-header">
@@ -192,6 +205,403 @@
     </div>
   </div>
 
+  <!-- PROFILE MODAL -->
   <div class="modal" id="profileModal">
     <div class="modal-content" style="text-align: left;">
-      <h3 style="text-align:center; margin-bottom: 16px;"><i class="fa-solid fa-id-
+      <h3 style="text-align:center; margin-bottom: 16px;"><i class="fa-solid fa-id-card"></i> Profile Settings</h3>
+      <div class="form-group">
+        <label>Display Username</label>
+        <input type="text" id="profUsername" placeholder="Your username" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="text" id="profEmail" disabled />
+      </div>
+      <div class="form-group">
+        <label>Date of Birth (Locked - 18+ Verified)</label>
+        <input type="text" id="profDob" disabled />
+      </div>
+      <button class="btn" onclick="saveProfileChanges()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+      <button class="btn" style="background: var(--bg-card); margin-top: 8px;" onclick="closeProfileModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- INVITE MODAL -->
+  <div class="modal" id="inviteModal">
+    <div class="modal-content">
+      <h3>Invite to Vizag Night Hub</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Scan or share link to join this 18+ hub.</p>
+      <div id="qrcode"></div>
+      <div class="form-group" style="margin-top: 10px;">
+        <input type="text" id="inviteUrl" readonly style="font-size: 12px;" />
+      </div>
+      <button class="btn" onclick="copyInviteLink()"><i class="fa-solid fa-copy"></i> Copy Link</button>
+      <button class="btn" style="background: var(--bg-card); margin-top: 8px;" onclick="closeInviteModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // --- HOST CREDENTIALS ---
+    const HOST_EMAIL = "vardhansai8116@gmail.com";
+    const HOST_PASS = "Vardhan@8116";
+
+    // Privacy Masking (e.g. "alex@gmail.com" -> "ale***@gmail.com")
+    function maskEmail(email) {
+      if (!email || !email.includes("@")) return "Hidden User";
+      const parts = email.split("@");
+      const name = parts[0];
+      const domain = parts[1];
+      const visible = name.substring(0, 3);
+      return `${visible}***@${domain}`;
+    }
+
+    let generatedOtp = null;
+    let tempRegEmail = "";
+
+    // VIEW TOGGLES
+    function showRegisterView() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("registerSection").style.display = "block";
+      document.getElementById("otpSection").style.display = "none";
+    }
+
+    function showLoginView() {
+      document.getElementById("loginSection").style.display = "block";
+      document.getElementById("registerSection").style.display = "none";
+      document.getElementById("otpSection").style.display = "none";
+    }
+
+    function showOtpView() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("registerSection").style.display = "none";
+      document.getElementById("otpSection").style.display = "block";
+    }
+
+    // 18+ Verification Logic
+    function calculateAge(dobString) {
+      const dob = new Date(dobString);
+      const today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const monthDiff = today.getMonth() - dob.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
+    // Step 2: Trigger OTP
+    function sendOtp() {
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
+      if (!email || !email.includes("@")) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+      tempRegEmail = email;
+      generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      alert(`[Vizag Night Hub Security OTP]: ${generatedOtp}`);
+      showOtpView();
+    }
+
+    // Step 3: Validate and Register
+    function verifyAndSetPassword() {
+      const enteredOtp = document.getElementById("enteredOtp").value.trim();
+      const username = document.getElementById("regUsername").value.trim();
+      const dobVal = document.getElementById("regDob").value;
+      const newPassword = document.getElementById("newPassword").value.trim();
+
+      if (enteredOtp !== generatedOtp) {
+        alert("Invalid OTP code. Please enter the 6 digits correctly.");
+        return;
+      }
+      if (!username) {
+        alert("Please choose a username.");
+        return;
+      }
+      if (!dobVal) {
+        alert("Please select your date of birth.");
+        return;
+      }
+
+      const age = calculateAge(dobVal);
+      if (isNaN(age) || age < 18) {
+        alert("Access Denied: You must be 18+ to register for Vizag Night Hub.");
+        return;
+      }
+
+      if (newPassword.length < 4) {
+        alert("Password must be at least 4 characters.");
+        return;
+      }
+
+      // Save user to storage
+      const userData = { email: tempRegEmail, username: username, dob: dobVal, password: newPassword };
+      localStorage.setItem("user_" + tempRegEmail, JSON.stringify(userData));
+
+      // Append to members list
+      let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
+      if (!members.find(m => m.email === tempRegEmail)) {
+        members.push({ email: tempRegEmail, username: username, dob: dobVal });
+        localStorage.setItem("vize_members_list", JSON.stringify(members));
+      }
+
+      alert("Registration complete! You are verified as 18+. Please sign in.");
+      showLoginView();
+      document.getElementById("loginEmail").value = tempRegEmail;
+    }
+
+    // LOGIN
+    function handleLogin() {
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const pass = document.getElementById("loginPassword").value.trim();
+
+      if (email === HOST_EMAIL && pass === HOST_PASS) {
+        sessionStorage.setItem("currentUser", email);
+        sessionStorage.setItem("currentUsername", "Admin Host");
+        launchApp(email, "Admin Host");
+        return;
+      }
+
+      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "null");
+      if (localUser && localUser.password === pass) {
+        sessionStorage.setItem("currentUser", email);
+        sessionStorage.setItem("currentUsername", localUser.username || email.split('@')[0]);
+        launchApp(email, localUser.username || email.split('@')[0]);
+        return;
+      }
+
+      alert("Invalid Email or Password. If you are new, click 'Register with Email OTP'.");
+    }
+
+    function launchApp(email, username) {
+      document.getElementById("authBox").style.display = "none";
+      document.getElementById("appBox").style.display = "grid";
+
+      document.getElementById("myUsernameLabel").innerText = username;
+      document.getElementById("myAvatar").innerText = username[0].toUpperCase();
+      
+      const isHost = email === HOST_EMAIL;
+      document.getElementById("myRoleLabel").innerText = isHost ? "Group Host (Admin)" : "Member (18+)";
+      if (isHost) document.getElementById("hostPrivilegeNotice").style.display = "block";
+
+      renderApp();
+    }
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.reload();
+    }
+
+    function openProfileModal() {
+      const email = sessionStorage.getItem("currentUser");
+      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
+      document.getElementById("profUsername").value = sessionStorage.getItem("currentUsername") || "";
+      document.getElementById("profEmail").value = email || "";
+      document.getElementById("profDob").value = localUser.dob || "18+ Verified (Locked)";
+      document.getElementById("profileModal").style.display = "flex";
+    }
+
+    function closeProfileModal() {
+      document.getElementById("profileModal").style.display = "none";
+    }
+
+    function saveProfileChanges() {
+      const newName = document.getElementById("profUsername").value.trim();
+      const email = sessionStorage.getItem("currentUser");
+
+      if (!newName) {
+        alert("Username cannot be empty.");
+        return;
+      }
+
+      sessionStorage.setItem("currentUsername", newName);
+      document.getElementById("myUsernameLabel").innerText = newName;
+      document.getElementById("myAvatar").innerText = newName[0].toUpperCase();
+
+      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
+      localUser.username = newName;
+      localStorage.setItem("user_" + email, JSON.stringify(localUser));
+
+      let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
+      members = members.map(m => m.email === email ? { ...m, username: newName } : m);
+      localStorage.setItem("vize_members_list", JSON.stringify(members));
+
+      alert("Username updated successfully!");
+      closeProfileModal();
+      renderApp();
+    }
+
+    function renderApp() {
+      const currentUser = sessionStorage.getItem("currentUser");
+      const isHost = currentUser === HOST_EMAIL;
+
+      // Render Members
+      let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
+      if (!members.find(m => m.email === HOST_EMAIL)) {
+        members.unshift({ email: HOST_EMAIL, username: "Admin Host", dob: "Verified" });
+      }
+
+      const membersList = document.getElementById("membersList");
+      membersList.innerHTML = "";
+
+      members.forEach((m, idx) => {
+        const isMemberHost = m.email === HOST_EMAIL;
+        const displayName = m.username || "Member";
+        const emailToShow = isHost ? m.email : maskEmail(m.email);
+
+        const item = document.createElement("div");
+        item.className = "member-item";
+        item.innerHTML = `
+          <div class="member-meta">
+            <div class="avatar" style="${isMemberHost ? 'background: var(--host-badge);' : ''}">${displayName[0].toUpperCase()}</div>
+            <div>
+              <div class="member-username">${displayName} ${isMemberHost ? '<span class="badge-host">HOST</span>' : ''}</div>
+              <div class="member-subtext">${emailToShow}</div>
+            </div>
+          </div>
+          ${(isHost && !isMemberHost) ? `<button class="btn-kick" onclick="removeMember(${idx})" title="Kick Member"><i class="fa-solid fa-user-xmark"></i></button>` : ''}
+        `;
+        membersList.appendChild(item);
+      });
+
+      renderMessages();
+    }
+
+    function renderMessages() {
+      const currentUser = sessionStorage.getItem("currentUser");
+      const isHost = currentUser === HOST_EMAIL;
+      const messages = JSON.parse(localStorage.getItem("vize_messages_history") || "[]");
+      const container = document.getElementById("messagesContainer");
+      container.innerHTML = "";
+
+      messages.forEach((msg, idx) => {
+        const isMe = msg.email === currentUser;
+        const msgEl = document.createElement("div");
+        msgEl.className = `message-bubble ${isMe ? 'me' : 'other'}`;
+
+        let mediaHtml = "";
+        if (msg.media) {
+          if (msg.media.type.startsWith("image")) mediaHtml = `<img src="${msg.media.data}" />`;
+          else if (msg.media.type.startsWith("video")) mediaHtml = `<video controls src="${msg.media.data}"></video>`;
+        }
+        let locHtml = msg.location ? `<p><i class="fa-solid fa-map-location-dot"></i> <a href="${msg.location}" target="_blank" style="color:#fff; text-decoration:underline;">View GPS Location</a></p>` : '';
+
+        const senderTag = isHost ? `${msg.senderName} (${msg.email})` : msg.senderName;
+
+        msgEl.innerHTML = `
+          <span class="bubble-sender">${senderTag} • ${msg.time}</span>
+          <div class="bubble-content">
+            ${msg.text ? `<p>${msg.text}</p>` : ''}
+            ${mediaHtml}
+            ${locHtml}
+          </div>
+          ${isHost ? `<div class="bubble-actions"><button class="btn-del-msg" onclick="deleteMessage(${idx})"><i class="fa-solid fa-trash"></i> Delete</button></div>` : ''}
+        `;
+        container.appendChild(msgEl);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendTextMessage() {
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text) return;
+      pushLocalMessage({ text: text });
+      input.value = "";
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.size > 2 * 1024 * 1024) {
+        alert("Please choose a file under 2MB.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        pushLocalMessage({
+          media: {
+            type: file.type,
+            data: e.target.result
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function shareLiveLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(position => {
+        const url = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+        pushLocalMessage({ location: url });
+      }, () => {
+        alert("Location access denied.");
+      });
+    }
+
+    function pushLocalMessage(payload) {
+      const email = sessionStorage.getItem("currentUser");
+      const senderName = sessionStorage.getItem("currentUsername") || email.split('@')[0];
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      let messages = JSON.parse(localStorage.getItem("vize_messages_history") || "[]");
+      messages.push({
+        email: email,
+        senderName: senderName,
+        text: payload.text || null,
+        media: payload.media || null,
+        location: payload.location || null,
+        time: timeStr
+      });
+
+      localStorage.setItem("vize_messages_history", JSON.stringify(messages));
+      renderMessages();
+    }
+
+    function deleteMessage(idx) {
+      let messages = JSON.parse(localStorage.getItem("vize_messages_history") || "[]");
+      messages.splice(idx, 1);
+      localStorage.setItem("vize_messages_history", JSON.stringify(messages));
+      renderMessages();
+    }
+
+    function removeMember(idx) {
+      if (confirm("Remove this member from Vizag Night Hub?")) {
+        let members = JSON.parse(localStorage.getItem("vize_members_list") || "[]");
+        members.splice(idx, 1);
+        localStorage.setItem("vize_members_list", JSON.stringify(members));
+        renderApp();
+      }
+    }
+
+    function openInviteModal() {
+      let liveUrl = window.location.href.split("#")[0];
+      document.getElementById("inviteUrl").value = liveUrl;
+
+      const qrEl = document.getElementById("qrcode");
+      qrEl.innerHTML = "";
+      new QRCode(qrEl, {
+        text: liveUrl,
+        width: 160,
+        height: 160
+      });
+      document.getElementById("inviteModal").style.display = "flex";
+    }
+
+    function closeInviteModal() {
+      document.getElementById("inviteModal").style.display = "none";
+    }
+
+    function copyInviteLink() {
+      const input = document.getElementById("inviteUrl");
+      input.select();
+      navigator.clipboard.writeText(input.value);
+      alert("Vizag Night Hub invite link copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
