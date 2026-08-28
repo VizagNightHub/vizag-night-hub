@@ -4,12 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vizag Night Hub</title>
-  <!-- Google Fonts & Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- QRCode.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- Firebase App & Realtime Database SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -84,7 +81,7 @@
     .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .chat-input-bar input[type="text"] { flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: #fff; outline: none; }
 
-    /* MODAL */
+    /* MODALS */
     .modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 100; }
     .modal-content { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 400px; width: 90%; text-align: center; }
     #qrcode { background: #fff; padding: 12px; border-radius: 10px; display: inline-block; margin: 16px 0; }
@@ -92,7 +89,6 @@
 </head>
 <body>
 
-  <!-- AUTH FORM -->
   <div class="auth-container" id="authBox">
     <div class="brand-header">
       <div class="logo-icon"><i class="fa-solid fa-moon"></i></div>
@@ -100,7 +96,6 @@
       <p id="authSubtitle">Live Real-Time Cloud Group (18+)</p>
     </div>
 
-    <!-- Login -->
     <div id="loginSection">
       <div class="form-group">
         <label>Email Address</label>
@@ -114,7 +109,6 @@
       <div class="auth-toggle">New to Hub? <a onclick="toggleAuthMode('register')">Register with Email OTP (18+)</a></div>
     </div>
 
-    <!-- Register Request -->
     <div id="registerSection" style="display: none;">
       <div class="form-group">
         <label>Enter Email Address</label>
@@ -124,7 +118,6 @@
       <div class="auth-toggle">Already registered? <a onclick="toggleAuthMode('login')">Sign In</a></div>
     </div>
 
-    <!-- OTP & Set Password -->
     <div id="otpSection" style="display: none;">
       <div class="form-group">
         <label>Enter 6-Digit OTP</label>
@@ -135,7 +128,7 @@
         <input type="text" id="regUsername" placeholder="e.g., Alex_Vizag" />
       </div>
       <div class="form-group">
-        <label>Date of Birth (18+ Only - Locked after set)</label>
+        <label>Date of Birth (18+ Only - Locked after registration)</label>
         <input type="date" id="regDob" />
       </div>
       <div class="form-group">
@@ -146,7 +139,6 @@
     </div>
   </div>
 
-  <!-- MAIN CHAT APP -->
   <div class="app-container" id="appBox">
     <div class="sidebar">
       <div class="sidebar-header">
@@ -181,10 +173,10 @@
       <div class="chat-header">
         <div>
           <strong style="font-size:16px;">Vizag Night Feed</strong>
-          <p style="font-size: 12px; color: var(--text-muted);">Synchronized live room</p>
+          <p style="font-size: 12px; color: var(--text-muted);">Synchronized private room</p>
         </div>
         <div id="hostPrivilegeNotice" style="display:none; font-size:12px; color:var(--host-badge);">
-          <i class="fa-solid fa-shield-halved"></i> Host Moderation Active
+          <i class="fa-solid fa-shield-halved"></i> Host Admin Active
         </div>
       </div>
 
@@ -200,430 +192,6 @@
     </div>
   </div>
 
-  <!-- PROFILE MODAL -->
   <div class="modal" id="profileModal">
     <div class="modal-content" style="text-align: left;">
-      <h3 style="text-align:center; margin-bottom: 16px;"><i class="fa-solid fa-id-card"></i> Profile Settings</h3>
-      <div class="form-group">
-        <label>Display Username</label>
-        <input type="text" id="profUsername" placeholder="Your username" />
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="text" id="profEmail" disabled />
-      </div>
-      <div class="form-group">
-        <label>Date of Birth (Locked)</label>
-        <input type="text" id="profDob" disabled />
-      </div>
-      <button class="btn" onclick="saveProfileChanges()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
-      <button class="btn" style="background: var(--bg-card); margin-top: 8px;" onclick="closeProfileModal()">Close</button>
-    </div>
-  </div>
-
-  <!-- INVITE MODAL -->
-  <div class="modal" id="inviteModal">
-    <div class="modal-content">
-      <h3>Invite to Vizag Night Hub</h3>
-      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Scan or share link to join this 18+ hub.</p>
-      <div id="qrcode"></div>
-      <div class="form-group" style="margin-top: 10px;">
-        <input type="text" id="inviteUrl" readonly style="font-size: 12px;" />
-      </div>
-      <button class="btn" onclick="copyInviteLink()"><i class="fa-solid fa-copy"></i> Copy Link</button>
-      <button class="btn" style="background: var(--bg-card); margin-top: 8px;" onclick="closeInviteModal()">Close</button>
-    </div>
-  </div>
-
-  <script>
-    // --- HOST CREDENTIALS ---
-    const HOST_EMAIL = "vardhansai8116@gmail.com";
-    const HOST_PASS = "Vardhan@8116";
-
-    // Safe Database Handler (Works locally and via Firebase without crashing)
-    let db = null;
-    let isFirebaseReady = false;
-
-    try {
-      const firebaseConfig = {
-        apiKey: "AIzaSyDummyKeyForFallbackSafety12345",
-        authDomain: "vizag-night-hub.firebaseapp.com",
-        databaseURL: "https://vizag-night-hub-default-rtdb.firebaseio.com",
-        projectId: "vizag-night-hub",
-        storageBucket: "vizag-night-hub.appspot.com",
-        messagingSenderId: "1234567890",
-        appId: "1:1234567890:web:abcdef123456"
-      };
-      if (typeof firebase !== 'undefined') {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        isFirebaseReady = true;
-      }
-    } catch(err) {
-      console.warn("Firebase not fully configured yet. Running in high-reliability client mode.");
-    }
-
-    let generatedOtp = null;
-    let tempRegEmail = "";
-
-    function cleanKey(email) {
-      return (email || "").replace(/\./g, "_dot_").replace(/@/g, "_at_");
-    }
-
-    function toggleAuthMode(mode) {
-      document.getElementById("loginSection").style.display = mode === 'login' ? 'block' : 'none';
-      document.getElementById("registerSection").style.display = mode === 'register' ? 'block' : 'none';
-      document.getElementById("otpSection").style.display = mode === 'otp' ? 'block' : 'none';
-    }
-
-    function calculateAge(dobString) {
-      const dob = new Date(dobString);
-      const today = new Date();
-      let age = today.getFullYear() - dob.getFullYear();
-      const monthDiff = today.getMonth() - dob.getMonth();
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-        age--;
-      }
-      return age;
-    }
-
-    function sendOtp() {
-      const email = document.getElementById("regEmail").value.trim().toLowerCase();
-      if (!email || !email.includes("@")) {
-        alert("Please enter a valid email address.");
-        return;
-      }
-      tempRegEmail = email;
-      generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-      alert(`[Vizag Night Hub OTP]: ${generatedOtp}`);
-      toggleAuthMode('otp');
-    }
-
-    function verifyAndSetPassword() {
-      const enteredOtp = document.getElementById("enteredOtp").value.trim();
-      const username = document.getElementById("regUsername").value.trim();
-      const dobVal = document.getElementById("regDob").value;
-      const newPassword = document.getElementById("newPassword").value.trim();
-
-      if (enteredOtp !== generatedOtp) {
-        alert("Invalid OTP code. Try again.");
-        return;
-      }
-      if (!username) {
-        alert("Please enter a username.");
-        return;
-      }
-      if (!dobVal) {
-        alert("Please select your date of birth.");
-        return;
-      }
-
-      const age = calculateAge(dobVal);
-      if (isNaN(age) || age < 18) {
-        alert("Access Denied: Only 18+ individuals are allowed to register.");
-        return;
-      }
-
-      if (newPassword.length < 4) {
-        alert("Password must be at least 4 characters.");
-        return;
-      }
-
-      const userData = { email: tempRegEmail, username: username, dob: dobVal, password: newPassword };
-      localStorage.setItem("user_" + tempRegEmail, JSON.stringify(userData));
-
-      if (isFirebaseReady && db) {
-        try {
-          db.ref('users/' + cleanKey(tempRegEmail)).set(userData);
-          db.ref('members/' + cleanKey(tempRegEmail)).set({ email: tempRegEmail, username: username, dob: dobVal });
-        } catch(e) {}
-      }
-
-      alert("Registration complete! You are verified as 18+. Please log in.");
-      toggleAuthMode('login');
-      document.getElementById("loginEmail").value = tempRegEmail;
-    }
-
-    function handleLogin() {
-      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
-      const pass = document.getElementById("loginPassword").value.trim();
-
-      if (email === HOST_EMAIL && pass === HOST_PASS) {
-        sessionStorage.setItem("currentUser", email);
-        sessionStorage.setItem("currentUsername", "Host (Admin)");
-        launchApp(email, "Host (Admin)");
-        return;
-      }
-
-      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "null");
-      if (localUser && localUser.password === pass) {
-        sessionStorage.setItem("currentUser", email);
-        sessionStorage.setItem("currentUsername", localUser.username || email.split('@')[0]);
-        launchApp(email, localUser.username || email.split('@')[0]);
-        return;
-      }
-
-      if (isFirebaseReady && db) {
-        db.ref('users/' + cleanKey(email)).once('value', snapshot => {
-          const user = snapshot.val();
-          if (user && user.password === pass) {
-            sessionStorage.setItem("currentUser", email);
-            sessionStorage.setItem("currentUsername", user.username || email.split('@')[0]);
-            launchApp(email, user.username || email.split('@')[0]);
-          } else {
-            alert("Invalid Email or Password. Please register first.");
-          }
-        });
-      } else {
-        alert("Invalid Email or Password. Please register first.");
-      }
-    }
-
-    function launchApp(email, username) {
-      document.getElementById("authBox").style.display = "none";
-      document.getElementById("appBox").style.display = "grid";
-
-      document.getElementById("myUsernameLabel").innerText = username;
-      document.getElementById("myAvatar").innerText = username[0].toUpperCase();
-      
-      const isHost = email === HOST_EMAIL;
-      document.getElementById("myRoleLabel").innerText = isHost ? "Group Host (Admin)" : "Member (18+)";
-      if (isHost) document.getElementById("hostPrivilegeNotice").style.display = "block";
-
-      listenToRealtimeData();
-    }
-
-    function logout() {
-      sessionStorage.clear();
-      window.location.reload();
-    }
-
-    function openProfileModal() {
-      const email = sessionStorage.getItem("currentUser");
-      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
-      document.getElementById("profUsername").value = sessionStorage.getItem("currentUsername") || "";
-      document.getElementById("profEmail").value = email || "";
-      document.getElementById("profDob").value = localUser.dob || "Verified 18+";
-      document.getElementById("profileModal").style.display = "flex";
-    }
-
-    function closeProfileModal() {
-      document.getElementById("profileModal").style.display = "none";
-    }
-
-    function saveProfileChanges() {
-      const newName = document.getElementById("profUsername").value.trim();
-      const email = sessionStorage.getItem("currentUser");
-
-      if (!newName) {
-        alert("Username cannot be empty.");
-        return;
-      }
-
-      sessionStorage.setItem("currentUsername", newName);
-      document.getElementById("myUsernameLabel").innerText = newName;
-      document.getElementById("myAvatar").innerText = newName[0].toUpperCase();
-
-      const localUser = JSON.parse(localStorage.getItem("user_" + email) || "{}");
-      localUser.username = newName;
-      localStorage.setItem("user_" + email, JSON.stringify(localUser));
-
-      if (isFirebaseReady && db) {
-        try {
-          db.ref('users/' + cleanKey(email) + '/username').set(newName);
-          db.ref('members/' + cleanKey(email) + '/username').set(newName);
-        } catch(e) {}
-      }
-
-      alert("Username updated successfully!");
-      closeProfileModal();
-    }
-
-    function listenToRealtimeData() {
-      const currentUser = sessionStorage.getItem("currentUser");
-      const currentUsername = sessionStorage.getItem("currentUsername");
-      const isHost = currentUser === HOST_EMAIL;
-
-      // Render Current Members
-      const membersList = document.getElementById("membersList");
-      membersList.innerHTML = `
-        <div class="member-item">
-          <div class="member-meta">
-            <div class="avatar" style="${isHost ? 'background: var(--host-badge);' : ''}">${currentUsername[0].toUpperCase()}</div>
-            <div>
-              <div class="member-username">${currentUsername} ${isHost ? '<span class="badge-host">HOST</span>' : ''}</div>
-              <div class="member-subtext">${currentUser}</div>
-            </div>
-          </div>
-        </div>
-      `;
-
-      if (isFirebaseReady && db) {
-        try {
-          db.ref('messages').on('value', snapshot => {
-            const container = document.getElementById("messagesContainer");
-            container.innerHTML = "";
-            const data = snapshot.val() || {};
-
-            Object.keys(data).forEach(msgKey => {
-              const msg = data[msgKey];
-              const isMe = msg.email === currentUser;
-              const msgEl = document.createElement("div");
-              msgEl.className = `message-bubble ${isMe ? 'me' : 'other'}`;
-
-              let mediaHtml = "";
-              if (msg.media) {
-                if (msg.media.type.startsWith("image")) {
-                  mediaHtml = `<img src="${msg.media.data}" alt="Uploaded image" />`;
-                } else if (msg.media.type.startsWith("video")) {
-                  mediaHtml = `<video controls src="${msg.media.data}"></video>`;
-                }
-              }
-
-              let locHtml = "";
-              if (msg.location) {
-                locHtml = `<p><i class="fa-solid fa-map-location-dot"></i> <a href="${msg.location}" target="_blank" style="color:#fff; text-decoration:underline;">View GPS Location</a></p>`;
-              }
-
-              msgEl.innerHTML = `
-                <span class="bubble-sender">${msg.senderName} (${msg.email}) • ${msg.time}</span>
-                <div class="bubble-content">
-                  ${msg.text ? `<p>${msg.text}</p>` : ''}
-                  ${mediaHtml}
-                  ${locHtml}
-                </div>
-                ${isHost ? `<div class="bubble-actions"><button class="btn-del-msg" onclick="deleteMessage('${msgKey}')"><i class="fa-solid fa-trash"></i> Delete</button></div>` : ''}
-              `;
-              container.appendChild(msgEl);
-            });
-            container.scrollTop = container.scrollHeight;
-          });
-        } catch(e) {}
-      }
-    }
-
-    function sendTextMessage() {
-      const input = document.getElementById("chatInput");
-      const text = input.value.trim();
-      if (!text) return;
-      pushMessage({ text: text });
-      input.value = "";
-    }
-
-    function handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      if (file.size > 2 * 1024 * 1024) {
-        alert("Please choose a file under 2MB for fast syncing.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        pushMessage({
-          media: {
-            type: file.type,
-            data: e.target.result
-          }
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function shareLiveLocation() {
-      if (!navigator.geolocation) {
-        alert("Geolocation not supported by your browser.");
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(position => {
-        const url = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
-        pushMessage({ location: url });
-      }, () => {
-        alert("Location access denied.");
-      });
-    }
-
-    function pushMessage(payload) {
-      const email = sessionStorage.getItem("currentUser");
-      const senderName = sessionStorage.getItem("currentUsername") || email.split('@')[0];
-      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      const newMsg = {
-        email: email,
-        senderName: senderName,
-        text: payload.text || null,
-        media: payload.media || null,
-        location: payload.location || null,
-        time: timeStr,
-        timestamp: Date.now()
-      };
-
-      if (isFirebaseReady && db) {
-        try {
-          db.ref('messages').push(newMsg);
-        } catch(e) {
-          renderFallbackMessage(newMsg);
-        }
-      } else {
-        renderFallbackMessage(newMsg);
-      }
-    }
-
-    function renderFallbackMessage(msg) {
-      const container = document.getElementById("messagesContainer");
-      const msgEl = document.createElement("div");
-      msgEl.className = "message-bubble me";
-
-      let mediaHtml = "";
-      if (msg.media) {
-        if (msg.media.type.startsWith("image")) mediaHtml = `<img src="${msg.media.data}" />`;
-        else if (msg.media.type.startsWith("video")) mediaHtml = `<video controls src="${msg.media.data}"></video>`;
-      }
-      let locHtml = msg.location ? `<p><a href="${msg.location}" target="_blank" style="color:#fff;">View GPS Location</a></p>` : '';
-
-      msgEl.innerHTML = `
-        <span class="bubble-sender">${msg.senderName} • ${msg.time}</span>
-        <div class="bubble-content">
-          ${msg.text ? `<p>${msg.text}</p>` : ''}
-          ${mediaHtml}
-          ${locHtml}
-        </div>
-      `;
-      container.appendChild(msgEl);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function deleteMessage(key) {
-      if (isFirebaseReady && db) {
-        db.ref('messages/' + key).remove();
-      }
-    }
-
-    function openInviteModal() {
-      let liveUrl = window.location.href.split("#")[0];
-      document.getElementById("inviteUrl").value = liveUrl;
-
-      const qrEl = document.getElementById("qrcode");
-      qrEl.innerHTML = "";
-      new QRCode(qrEl, {
-        text: liveUrl,
-        width: 160,
-        height: 160
-      });
-      document.getElementById("inviteModal").style.display = "flex";
-    }
-
-    function closeInviteModal() {
-      document.getElementById("inviteModal").style.display = "none";
-    }
-
-    function copyInviteLink() {
-      const input = document.getElementById("inviteUrl");
-      input.select();
-      navigator.clipboard.writeText(input.value);
-      alert("Vizag Night Hub invite link copied to clipboard!");
-    }
-  </script>
-</body>
-</html>
+      <h3 style="text-align:center; margin-bottom: 16px;"><i class="fa-solid fa-id-
