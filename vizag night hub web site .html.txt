@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIZE NIGHT HUB</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- QRCode.js for invite generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-surface: #131b2e;
+      --bg-card: #1c2640;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #233052;
+      --danger: #ef4444;
+      --success: #10b981;
+      --host-badge: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* AUTHENTICATION VIEW */
+    .auth-container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .brand-header .logo-icon {
+      font-size: 38px;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .brand-header h1 {
+      font-size: 24px;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .brand-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--accent);
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--accent-gradient);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.95;
+    }
+
+    .auth-toggle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+
+    .auth-toggle a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* CHAT APP INTERFACE */
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      grid-template-columns: 320px 1fr;
+      background: var(--bg-main);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .group-info h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .group-info span {
+      font-size: 12px;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sidebar-actions button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .members-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .members-section h3 {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .member-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .member-item:hover {
+      background: var(--bg-card);
+    }
+
+    .member-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .member-email {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px;
+    }
+
+    .badge-host {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--host-badge);
+      border: 1px solid var(--host-badge);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .btn-kick {
+      background: transparent;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px;
+    }
+
+    .user-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* MAIN CHAT */
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--bg-main);
+    }
+
+    .chat-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .messages-container {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message-bubble {
+      max-width: 65%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-bubble.me {
+      align-self: flex-end;
+    }
+
+    .message-bubble.me .bubble-content {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 16px 16px 2px 16px;
+    }
+
+    .message-bubble.other {
+      align-self: flex-start;
+    }
+
+    .message-bubble.other .bubble-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px 16px 16px 2px;
+    }
+
+    .bubble-sender {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .bubble-content {
+      padding: 12px 16px;
+      position: relative;
+    }
+
+    .bubble-content img, .bubble-content video {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .bubble-actions {
+      margin-top: 4px;
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn-del-msg {
+      background: transparent;
+      border: none;
+      color: var(--danger);
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    /* INPUT BAR */
+    .chat-input-bar {
+      padding: 16px 24px;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .btn-icon:hover {
+      color: var(--accent);
+    }
+
+    .chat-input-bar input[type="text"] {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      outline: none;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    #qrcode {
+      background: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      display: inline-block;
+      margin: 16px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUTHENTICATION FORM -->
+  <div class="auth-container" id="authBox">
+    <div class="brand-header">
+      <div class="logo-icon"><i class="fa-solid fa-moon"></i></div>
+      <h1>VIZE NIGHT HUB</h1>
+      <p id="authSubtitle">Sign in with your email and password</p>
+    </div>
+
+    <!-- Step 1: Login Form -->
+    <div id="loginSection">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="name@domain.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" />
+      </div>
+      <button class="btn" onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      <div class="auth-toggle">
+        New to Hub? <a onclick="toggleAuthMode('register')">Register with Email OTP</a>
+      </div>
+    </div>
+
+    <!-- Step 2: Register Email Request -->
+    <div id="registerSection" style="display: none;">
+      <div class="form-group">
+        <label>Enter Email Address</label>
+        <input type="email" id="regEmail" placeholder="name@domain.com" />
+      </div>
+      <button class="btn" onclick="sendOtp()"><i class="fa-solid fa-paper-plane"></i> Send OTP</button>
+      <div class="auth-toggle">
+        Already registered? <a onclick="toggleAuthMode('login')">Sign In</a>
+      </div>
+    </div>
+
+    <!-- Step 3: Verify OTP & Create Password -->
+    <div id="otpSection" style="display: none;">
+      <div class="form-group">
+        <label>Enter 6-Digit OTP</label>
+        <input type="text" id="enteredOtp" placeholder="123456" maxlength="6" />
+      </div>
+      <div class="form-group">
+        <label>Create New Password</label>
+        <input type="password" id="newPassword" placeholder="••••••••" />
+      </div>
+      <button class="btn" onclick="verifyAndSetPassword()"><i class="fa-solid fa-check"></i> Complete Registration</button>
+    </div>
+  </div>
+
+  <!-- CHAT APPLICATION -->
+  <div class="app-container" id="appBox">
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="group-info">
+          <h2>VIZE NIGHT HUB</h2>
+          <span><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Group Chat Active</span>
+        </div>
+        <div class="sidebar-actions">
+          <button onclick="openInviteModal()" title="Invite Link & QR Code"><i class="fa-solid fa-qrcode"></i></button>
+        </div>
+      </div>
+
+      <div class="members-section">
+        <h3>Group Members</h3>
+        <div id="membersList"></div>
+      </div>
+
+      <div class="user-footer">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="avatar" id="myAvatar">U</div>
+          <div>
+            <div id="myEmailLabel" style="font-size: 13px; font-weight:600;"></div>
+            <div id="myRoleLabel" style="font-size: 11px; color: var(--text-muted);"></div>
+          </div>
+        </div>
+        <button class="btn-kick" onclick="logout()" title="Logout"><i class="fa-solid fa-power-off"></i></button>
+      </div>
+    </div>
+
+    <!-- CHAT INTERFACE -->
+    <div class="chat-area">
+      <div class="chat-header">
+        <div>
+          <strong style="font-size:16px;">Night Hub Public Feed</strong>
+          <p style="font-size: 12px; color: var(--text-muted);">Live updates, photos, videos & location</p>
+        </div>
+        <div id="hostPrivilegeNotice" style="display:none; font-size:12px; color:var(--host-badge);">
+          <i class="fa-solid fa-shield-halved"></i> Host Moderation Enabled
+        </div>
+      </div>
+
+      <div class="messages-container" id="messagesContainer"></div>
+
+      <!-- INPUT BAR -->
+      <div class="chat-input-bar">
+        <div class="input-actions">
+          <input type="file" id="mediaUpload" accept="image/*,video/*" style="display:none;" onchange="handleFileUpload(event)" />
+          <button class="btn-icon" onclick="document.getElementById('mediaUpload').click()" title="Share Photo/Video">
+            <i class="fa-solid fa-photo-film"></i>
+          </button>
+          <button class="btn-icon" onclick="shareLiveLocation()" title="Share Live Location">
+            <i class="fa-solid fa-location-crosshairs"></i>
+          </button>
+        </div>
+        <input type="text" id="chatInput" placeholder="Write a message..." onkeydown="if(event.key==='Enter') sendTextMessage()" />
+        <button class="btn" style="width: auto; padding: 12px 20px;" onclick="sendTextMessage()">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR & INVITE LINK MODAL -->
+  <div class="modal" id="inviteModal">
+    <div class="modal-content">
+      <h3>Invite to VIZE NIGHT HUB</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Share this QR code or link to join the chat.</p>
+      
+      <div id="qrcode"></div>
+      
+      <div class="form-group" style="margin-top: 10px;">
+        <input type="text" id="inviteUrl" readonly style="font-size: 12px;" />
+      </div>
+      <button class="btn" onclick="copyInviteLink()"><i class="fa-solid fa-copy"></i> Copy Link</button>
+      <button class="btn" style="background: var(--bg-card); margin-top: 8px;" onclick="closeInviteModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // PRE-DEFINED HOST CREDENTIALS
+    const HOST_EMAIL = "vardhansai8116@gmail.com";
+    const HOST_PASS = "Vardhan@8116";
+
+    // APPLICATION STATE (Uses localStorage for browser persistence)
+    let generatedOtp = null;
+    let tempRegEmail = "";
+
+    function initStorage() {
+      if (!localStorage.getItem("vize_users")) {
+        const initialUsers = {};
+        initialUsers[HOST_EMAIL] = HOST_PASS;
+        localStorage.setItem("vize_users", JSON.stringify(initialUsers));
+      }
+      if (!localStorage.getItem("vize_members")) {
+        localStorage.setItem("vize_members", JSON.stringify([HOST_EMAIL]));
+      }
+      if (!localStorage.getItem("vize_messages")) {
+        localStorage.setItem("vize_messages", JSON.stringify([
+          { id: 1, sender: HOST_EMAIL, text: "Welcome to VIZE NIGHT HUB! Feel free to share messages, media, or your location.", media: null, location: null, time: "System" }
+        ]));
+      }
+    }
+
+    initStorage();
+
+    // AUTH SWITCHING
+    function toggleAuthMode(mode) {
+      document.getElementById("loginSection").style.display = mode === 'login' ? 'block' : 'none';
+      document.getElementById("registerSection").style.display = mode === 'register' ? 'block' : 'none';
+      document.getElementById("otpSection").style.display = mode === 'otp' ? 'block' : 'none';
+    }
+
+    // OTP FLOW
+    function sendOtp() {
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
+      if (!email || !email.includes("@")) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+      tempRegEmail = email;
+      generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      // Simulated Email Dispatch for immediate client-side execution
+      alert(`[VIZE SECURITY] An OTP has been dispatched to: ${email}\n\nYour Verification Code is: ${generatedOtp}`);
+      toggleAuthMode('otp');
+    }
+
+    function verifyAndSetPassword() {
+      const enteredOtp = document.getElementById("enteredOtp").value.trim();
+      const newPassword = document.getElementById("newPassword").value.trim();
+
+      if (enteredOtp !== generatedOtp) {
+        alert("Invalid OTP code. Please try again.");
+        return;
+      }
+      if (newPassword.length < 4) {
+        alert("Password must be at least 4 characters.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("vize_users"));
+      users[tempRegEmail] = newPassword;
+      localStorage.setItem("vize_users", JSON.stringify(users));
+
+      // Add to member list if new
+      const members = JSON.parse(localStorage.getItem("vize_members"));
+      if (!members.includes(tempRegEmail)) {
+        members.push(tempRegEmail);
+        localStorage.setItem("vize_members", JSON.stringify(members));
+      }
+
+      alert("Account verified! You can now log in.");
+      toggleAuthMode('login');
+      document.getElementById("loginEmail").value = tempRegEmail;
+    }
+
+    // LOGIN LOGIC
+    function handleLogin() {
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const pass = document.getElementById("loginPassword").value.trim();
+
+      const users = JSON.parse(localStorage.getItem("vize_users"));
+
+      if (users[email] && users[email] === pass) {
+        sessionStorage.setItem("currentUser", email);
+        launchApp(email);
+      } else {
+        alert("Invalid Email or Password. If you are new, please register first.");
+      }
+    }
+
+    function launchApp(email) {
+      document.getElementById("authBox").style.display = "none";
+      document.getElementById("appBox").style.display = "grid";
+
+      document.getElementById("myEmailLabel").innerText = email;
+      document.getElementById("myAvatar").innerText = email[0].toUpperCase();
+      
+      const isHost = email === HOST_EMAIL;
+      document.getElementById("myRoleLabel").innerText = isHost ? "Group Host (Admin)" : "Member";
+      if (isHost) {
+        document.getElementById("hostPrivilegeNotice").style.display = "block";
+      }
+
+      renderMembers();
+      renderMessages();
+    }
+
+    function logout() {
+      sessionStorage.removeItem("currentUser");
+      window.location.reload();
+    }
+
+    // GROUP MEMBER MANAGEMENT (HOST ONLY)
+    function renderMembers() {
+      const members = JSON.parse(localStorage.getItem("vize_members")) || [];
+      const current = sessionStorage.getItem("currentUser");
+      const isHost = current === HOST_EMAIL;
+      const listEl = document.getElementById("membersList");
+      listEl.innerHTML = "";
+
+      members.forEach(member => {
+        const item = document.createElement("div");
+        item.className = "member-item";
+        
+        const isMemberHost = member === HOST_EMAIL;
+        
+        item.innerHTML = `
+          <div class="member-meta">
+            <div class="avatar" style="${isMemberHost ? 'background: var(--host-badge);' : ''}">${member[0].toUpperCase()}</div>
+            <div>
+              <div class="member-email">${member}</div>
+              ${isMemberHost ? '<span class="badge-host">HOST</span>' : ''}
+            </div>
+          </div>
+          ${(isHost && !isMemberHost) ? `<button class="btn-kick" onclick="removeMember('${member}')" title="Remove Member"><i class="fa-solid fa-user-xmark"></i></button>` : ''}
+        `;
+        listEl.appendChild(item);
+      });
+    }
+
+    function removeMember(email) {
+      if (confirm(`Are you sure you want to kick ${email} from the group?`)) {
+        let members = JSON.parse(localStorage.getItem("vize_members"));
+        members = members.filter(m => m !== email);
+        localStorage.setItem("vize_members", JSON.stringify(members));
+        renderMembers();
+      }
+    }
+
+    // MESSAGES LOGIC
+    function renderMessages() {
+      const messages = JSON.parse(localStorage.getItem("vize_messages")) || [];
+      const currentUser = sessionStorage.getItem("currentUser");
+      const isHost = currentUser === HOST_EMAIL;
+      const container = document.getElementById("messagesContainer");
+      container.innerHTML = "";
+
+      messages.forEach(msg => {
+        const isMe = msg.sender === currentUser;
+        const msgEl = document.createElement("div");
+        msgEl.className = `message-bubble ${isMe ? 'me' : 'other'}`;
+
+        let mediaHtml = "";
+        if (msg.media) {
+          if (msg.media.type.startsWith("image")) {
+            mediaHtml = `<img src="${msg.media.data}" alt="Uploaded file" />`;
+          } else if (msg.media.type.startsWith("video")) {
+            mediaHtml = `<video controls src="${msg.media.data}"></video>`;
+          }
+        }
+
+        let locHtml = "";
+        if (msg.location) {
+          locHtml = `<p><i class="fa-solid fa-map-location-dot"></i> <a href="${msg.location}" target="_blank" style="color:#fff; text-decoration:underline;">View Live Location on Google Maps</a></p>`;
+        }
+
+        msgEl.innerHTML = `
+          <span class="bubble-sender">${msg.sender} • ${msg.time}</span>
+          <div class="bubble-content">
+            ${msg.text ? `<p>${msg.text}</p>` : ''}
+            ${mediaHtml}
+            ${locHtml}
+          </div>
+          ${isHost ? `<div class="bubble-actions"><button class="btn-del-msg" onclick="deleteMessage(${msg.id})"><i class="fa-solid fa-trash"></i> Delete</button></div>` : ''}
+        `;
+        container.appendChild(msgEl);
+      });
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendTextMessage() {
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage({ text: text });
+      input.value = "";
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        addMessage({
+          media: {
+            type: file.type,
+            data: e.target.result
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function shareLiveLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+        addMessage({ location: mapsUrl });
+      }, () => {
+        alert("Unable to retrieve location. Please grant location permissions.");
+      });
+    }
+
+    function addMessage(payload) {
+      const messages = JSON.parse(localStorage.getItem("vize_messages")) || [];
+      const user = sessionStorage.getItem("currentUser");
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      messages.push({
+        id: Date.now(),
+        sender: user,
+        text: payload.text || null,
+        media: payload.media || null,
+        location: payload.location || null,
+        time: timeStr
+      });
+
+      localStorage.setItem("vize_messages", JSON.stringify(messages));
+      renderMessages();
+    }
+
+    function deleteMessage(id) {
+      let messages = JSON.parse(localStorage.getItem("vize_messages"));
+      messages = messages.filter(m => m.id !== id);
+      localStorage.setItem("vize_messages", JSON.stringify(messages));
+      renderMessages();
+    }
+
+    // QR & INVITE MODAL
+    function openInviteModal() {
+      const currentUrl = window.location.href;
+      document.getElementById("inviteUrl").value = currentUrl;
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: currentUrl,
+        width: 160,
+        height: 160
+      });
+      document.getElementById("inviteModal").style.display = "flex";
+    }
+
+    function closeInviteModal() {
+      document.getElementById("inviteModal").style.display = "none";
+    }
+
+    function copyInviteLink() {
+      const urlInput = document.getElementById("inviteUrl");
+      urlInput.select();
+      navigator.clipboard.writeText(urlInput.value);
+      alert("Group invite link copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
